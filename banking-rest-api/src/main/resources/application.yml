@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring.cloud.stream:
+  kafka.binder:
+    autoCreateTopics: true
+  bindings:
+    request_channel:
+      destination: request-channel
+      content-type: application/json
+      binder: kafka
+    reply_channel:
+      destination: reply-channel
+      content-type: application/json
+      binder: kafka
+spring:
+  application:
+    name: rest-api

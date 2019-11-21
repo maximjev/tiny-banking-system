@@ -1,0 +1,3 @@
+include 'banking-common'
+include 'banking-rest-api'
+include 'banking-domain'
