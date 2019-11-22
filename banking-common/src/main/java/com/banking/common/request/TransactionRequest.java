@@ -19,7 +19,4 @@ public class TransactionRequest implements Serializable {
 
     @Positive
     private BigDecimal amount;
-
-    @NotBlank
-    private String currency;
 }

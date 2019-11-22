@@ -1,6 +1,7 @@
 package com.banking.domain.mapper;
 
 import com.banking.common.response.BalanceResponse;
+import com.banking.common.view.AccountListView;
 import com.banking.domain.config.BaseMapperConfig;
 import com.banking.domain.entity.Account;
 import org.mapstruct.Mapper;
@@ -9,4 +10,6 @@ import org.mapstruct.Mapper;
 public interface AccountMapper {
 
     BalanceResponse balance(Account account);
+
+    AccountListView listView(Account account);
 }

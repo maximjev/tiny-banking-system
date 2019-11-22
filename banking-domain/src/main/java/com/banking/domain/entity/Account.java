@@ -20,4 +20,11 @@ public class Account {
     private BigDecimal balance;
 
     private String currency;
+
+    public void subtract(BigDecimal amount) {
+        this.balance = this.balance.subtract(amount);
+    }
+    public void add(BigDecimal amount) {
+        this.balance = this.balance.add(amount);
+    }
 }

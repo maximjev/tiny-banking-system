@@ -1,8 +1,8 @@
 package com.banking.rest.controller;
 
-import com.banking.common.request.PageRequest;
+import com.banking.common.request.TransactionPageRequest;
 import com.banking.common.request.TransactionRequest;
-import com.banking.common.response.TransactionListResponse;
+import com.banking.common.response.TransactionPageResponse;
 import com.banking.rest.facade.TransactionControllerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.unprocessableEntity;
 
 
 @RestController
@@ -27,9 +28,11 @@ public class TransactionController {
     }
 
     @GetMapping
-    public ResponseEntity<TransactionListResponse> listView(
-            @RequestParam("page") int pageIndex,
-            @RequestParam("size") int pageSize) {
-        return ok(service.listView(new PageRequest(pageIndex, pageSize)));
+    public ResponseEntity<TransactionPageResponse> listView(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size) {
+        return service.listView(new TransactionPageRequest(page, size))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> unprocessableEntity().build());
     }
 }

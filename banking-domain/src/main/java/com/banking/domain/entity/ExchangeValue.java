@@ -1,34 +1,24 @@
 package com.banking.domain.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Document
 @Builder
 @Getter
-public class Transaction {
-
+@Setter
+@AllArgsConstructor
+public class ExchangeValue {
     @Id
     private String id;
 
     private String from;
-
     private String to;
-
-    private BigDecimal amount;
-
-    private BigDecimal convertedAmount;
-
-    private String fromCurrency;
-
-    private String toCurrency;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
+    private BigDecimal conversionMultiplier;
 }

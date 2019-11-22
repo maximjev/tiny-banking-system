@@ -1,8 +1,9 @@
+
 dependencies {
-    implementation 'org.springframework:spring-context'
-    implementation 'javax.validation:validation-api'
-    implementation 'org.springframework.kafka:spring-kafka'
+    compile 'org.springframework:spring-context'
+    compile 'javax.validation:validation-api'
+    compile 'org.springframework.kafka:spring-kafka'
     compile ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-    compileOnly 'org.projectlombok:lombok'
+    compile 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 }

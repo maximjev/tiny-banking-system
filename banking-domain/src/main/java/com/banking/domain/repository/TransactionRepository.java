@@ -1,8 +1,7 @@
 package com.banking.domain.repository;
 
-import com.banking.common.request.PageRequest;
-import com.banking.common.request.TransactionRequest;
-import com.banking.common.response.TransactionListResponse;
+import com.banking.common.request.TransactionPageRequest;
+import com.banking.common.response.TransactionPageResponse;
 import com.banking.domain.entity.Transaction;
 import com.banking.domain.mapper.TransactionMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,18 +22,11 @@ public class TransactionRepository {
 
     private final TransactionMapper mapper;
 
-    public void save(TransactionRequest form) {
-        var transaction = Transaction.builder()
-                .from(form.getFrom())
-                .to(form.getTo())
-                .amount(form.getAmount())
-                .currency(form.getCurrency())
-                .build();
-
-        operations.save(transaction);
+    public Transaction save(Transaction transaction) {
+        return operations.save(transaction);
     }
 
-    public TransactionListResponse listView(PageRequest page) {
+    public TransactionPageResponse listView(TransactionPageRequest page) {
         var conditions = new Criteria();
 
         var total = operations.count(query(conditions), Transaction.class);
@@ -49,6 +41,6 @@ public class TransactionRepository {
                 .map(mapper::listView)
                 .collect(toList());
 
-        return new TransactionListResponse(entities, page.getPage(), page.getSize(), total);
+        return new TransactionPageResponse(entities, page.getPage(), page.getSize(), total);
     }
 }

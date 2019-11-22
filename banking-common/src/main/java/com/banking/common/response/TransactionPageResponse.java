@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionListResponse implements Serializable {
-    public static final String MEDIA_TYPE = "application/vnd.transactionListResponse+json";
+public class TransactionPageResponse implements Serializable {
+    public static final String MEDIA_TYPE = "application/vnd.transactionPageResponse+json";
 
     private List<TransactionListView> items;
     private int page;

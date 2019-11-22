@@ -2,11 +2,12 @@ package com.banking.domain.processor;
 
 
 import com.banking.common.config.KafkaConstants;
+import com.banking.common.request.AccountPageRequest;
 import com.banking.common.request.BalanceRequest;
-import com.banking.common.request.PageRequest;
+import com.banking.common.request.TransactionPageRequest;
 import com.banking.common.request.TransactionRequest;
 import com.banking.common.response.BalanceResponse;
-import com.banking.common.response.TransactionListResponse;
+import com.banking.common.response.TransactionPageResponse;
 import com.banking.domain.config.KafkaChannel;
 import com.banking.domain.service.AccountService;
 import com.banking.domain.service.TransactionService;
@@ -29,11 +30,11 @@ public class AsyncProcessor {
     private final KafkaChannel channel;
 
     @StreamListener(target = REQUEST_CHANNEL,
-            condition = "headers['" + KafkaConstants.MEDIA_TYPE_HEADER + "']=='" + PageRequest.MEDIA_TYPE + "'")
-    public void processPageRequest(Message<PageRequest> request) {
+            condition = "headers['" + KafkaConstants.MEDIA_TYPE_HEADER + "']=='" + TransactionPageRequest.MEDIA_TYPE + "'")
+    public void processPageRequest(Message<TransactionPageRequest> request) {
         channel.reply().send(withPayload(transactionService.listView(request.getPayload()))
                 .copyHeaders(request.getHeaders())
-                .setHeader(KafkaConstants.MEDIA_TYPE_HEADER, TransactionListResponse.MEDIA_TYPE)
+                .setHeader(KafkaConstants.MEDIA_TYPE_HEADER, TransactionPageResponse.MEDIA_TYPE)
                 .build());
     }
 
@@ -46,7 +47,17 @@ public class AsyncProcessor {
     @StreamListener(target = REQUEST_CHANNEL,
             condition = "headers['" + KafkaConstants.MEDIA_TYPE_HEADER + "']=='" + BalanceRequest.MEDIA_TYPE + "'")
     public void processBalanceRequest(Message<BalanceRequest> request) {
-        channel.reply().send(withPayload(accountService.balance(request.getPayload()))
+        accountService.balance(request.getPayload()).ifPresent(response ->
+                channel.reply().send(withPayload(response)
+                        .copyHeaders(request.getHeaders())
+                        .setHeader(KafkaConstants.MEDIA_TYPE_HEADER, BalanceResponse.MEDIA_TYPE)
+                        .build()));
+    }
+
+    @StreamListener(target = REQUEST_CHANNEL,
+            condition = "headers['" + KafkaConstants.MEDIA_TYPE_HEADER + "']=='" + AccountPageRequest.MEDIA_TYPE + "'")
+    public void processAccountListRequest(Message<AccountPageRequest> request) {
+        channel.reply().send(withPayload(accountService.listView(request.getPayload()))
                 .copyHeaders(request.getHeaders())
                 .setHeader(KafkaConstants.MEDIA_TYPE_HEADER, BalanceResponse.MEDIA_TYPE)
                 .build());

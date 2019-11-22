@@ -20,7 +20,9 @@ public class TransactionListView implements Serializable {
     private String from;
     private String to;
     private BigDecimal amount;
-    private String currency;
+    private BigDecimal convertedAmount;
+    private String fromCurrency;
+    private String toCurrency;
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
